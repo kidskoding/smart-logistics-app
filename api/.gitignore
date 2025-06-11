@@ -1,0 +1,8 @@
+# Python
+.venv/
+.python-version
+
+# Rust
+target/
+Cargo.lock
+.env
