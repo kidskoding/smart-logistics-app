@@ -1,41 +1,37 @@
-using System;
-public class Graph<T> {
-    private readonly Dictionary<GraphNode<T>, List<Tuple<GraphNode<T>, int>>> graph;
+public class Graph<T>
+{
+    private List<GraphNode<T>> graph;
 
     public Graph() {
-        graph = new Dictionary<GraphNode<T>, List<Tuple<GraphNode<T>, int>>>();
+        graph = [];
     }
 
-    public void AddNode(GraphNode<T> node) {
-        graph[node] = new List<Tuple<GraphNode<T>, int>>();
+    public void AddNode(GraphNode<T> node)
+    {
+        graph.Add(node);
     }
 
-    public void RemoveNode(GraphNode<T> node) {
-        foreach(var neighbor in graph[node]) {
-            graph[neighbor.Item1].RemoveAll(x => x.Item1.Equals(node));
-        }
+    public void RemoveNode(GraphNode<T> node)
+    {
         graph.Remove(node);
-    }
-
-    public void AddEdge(GraphNode<T> a, GraphNode<T> b, int weight) {
-        graph[a].Add(new Tuple<GraphNode<T>, int>(b, weight));
-        graph[b].Add(new Tuple<GraphNode<T>, int>(a, weight));
-    }
-
-    public void RemoveEdge(GraphNode<T> a, GraphNode<T> b) {
-        graph[a].RemoveAll(x => x.Item1.Equals(b));
-        graph[b].RemoveAll(x => x.Item1.Equals(a));
-    }
-
-    public override string ToString() {
-        string result = "";
-        foreach(var node in graph) {
-            result += node.Key.Value + ": ";
-            foreach(var edge in node.Value) {
-                result += edge.Item1.Value + "(" + edge.Item2 + ") ";
+        foreach (GraphNode<T> other in graph)
+        {
+            if (other.Neighbors.Count > 0)
+            {
+                other.Neighbors.Remove(node);
             }
-            result += "\n";
         }
-        return result;
+    }
+
+    public void AddEdge(GraphNode<T> a, GraphNode<T> b)
+    {
+        a.Neighbors.Add(b);
+        b.Neighbors.Add(a);
+    }
+
+    public void RemoveEdge(GraphNode<T> a, GraphNode<T> b)
+    {
+        a.Neighbors.RemoveAll(n => n.Equals(b));
+        b.Neighbors.RemoveAll(n => n.Equals(b));
     }
 }
