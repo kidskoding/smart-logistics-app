@@ -1,9 +1,0 @@
-[workspace]
-members = [
-    "db",
-    "tracking",
-]
-
-[workspace.dependencies]
-db = { version = "0.1.0", path = "db" }
-tracking = { version = "0.1.0", path = "tracking" }
